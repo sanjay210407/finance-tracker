@@ -8,7 +8,23 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = [
+	"https://finance-tracker-git-main-sanjay210407s-projects.vercel.app",
+	"http://localhost:3000",
+];
+
+app.use(
+	cors({
+		origin: (origin, callback) => {
+			if (!origin || allowedOrigins.includes(origin)) {
+				return callback(null, true);
+			}
+
+			return callback(new Error("Not allowed by CORS"));
+		},
+		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+	})
+);
 app.use(express.json());
 app.use
 ("/api/auth", require("./routes/authRoutes"));
