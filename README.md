@@ -1,5 +1,15 @@
 # 💰 Personal Finance Tracker
 
+[![MERN Stack](https://img.shields.io/badge/Stack-MERN-16a34a?style=for-the-badge)](https://www.mongodb.com/mern-stack)
+[![React](https://img.shields.io/badge/Frontend-React-0ea5e9?style=for-the-badge&logo=react&logoColor=white)](https://react.dev/)
+[![Node.js](https://img.shields.io/badge/Backend-Node.js-15803d?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/Database-MongoDB-166534?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![JWT Auth](https://img.shields.io/badge/Auth-JWT-f97316?style=for-the-badge)](https://jwt.io/)
+
+## 🔗 Live Repository
+
+GitHub: [https://github.com/sanjay210407/finance-tracker](https://github.com/sanjay210407/finance-tracker)
+
 A full-stack Personal Finance Tracker application built with the **MERN Stack** (MongoDB, Express.js, React, Node.js) featuring JWT-based authentication, real-time financial analytics, and dynamic data visualization.
 
 ---
@@ -12,7 +22,7 @@ A full-stack Personal Finance Tracker application built with the **MERN Stack** 
 ✅ **Data Visualization** - Interactive Recharts for pie charts and line graphs  
 ✅ **Monthly Trends** - Track spending patterns over time  
 ✅ **Export Reports** - Download financial reports as PDF  
-✅ **Responsive Design** - Mobile-friendly modern UI with Tailwind CSS aesthetics  
+✅ **Responsive Design** - Mobile-friendly modern UI with custom CSS and polished interactions  
 ✅ **Secure Backend** - Protected API routes with authentication middleware  
 
 ---
