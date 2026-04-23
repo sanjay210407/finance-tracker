@@ -3,14 +3,22 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
 
-dotenv.config();
+dotenv.config({ quiet: true });
 connectDB();
 
 const app = express();
 
+const parseOrigins = (value = "") =>
+	value
+		.split(",")
+		.map((origin) => origin.trim())
+		.filter(Boolean);
+
 const allowedOrigins = [
 	"https://finance-tracker-git-main-sanjay210407s-projects.vercel.app",
 	"http://localhost:3000",
+	...parseOrigins(process.env.FRONTEND_URL),
+	...parseOrigins(process.env.CORS_ORIGIN),
 ];
 
 app.use(
@@ -26,8 +34,16 @@ app.use(
 	})
 );
 app.use(express.json());
-app.use
-("/api/auth", require("./routes/authRoutes"));
+
+app.get("/", (req, res) => {
+	res.json({ message: "Finance Tracker API is running" });
+});
+
+app.get("/api/health", (req, res) => {
+	res.json({ status: "ok" });
+});
+
+app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/transactions", require("./routes/transactionRoutes"));
 
 const PORT = process.env.PORT || 5000;
