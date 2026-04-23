@@ -20,7 +20,7 @@ function Login() {
     try {
       setLoading(true);
       setError("");
-      await warmUpAPI();
+      await warmUpAPI().catch(() => null);
       const res = await API.post("/auth/login", { email, password });
       localStorage.setItem("token", res.data.token);
       navigate("/dashboard");
@@ -28,6 +28,9 @@ function Login() {
       setError(
         err?.response?.data?.msg ||
           err?.response?.data?.message ||
+          ([502, 503].includes(err?.response?.status)
+            ? "Backend is unavailable on Render. Please check the latest backend deploy logs."
+            : null) ||
           (err?.code === "ERR_NETWORK"
             ? "Backend is waking up. Please try again in a few seconds."
             : null) ||

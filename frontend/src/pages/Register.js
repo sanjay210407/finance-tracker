@@ -21,13 +21,16 @@ function Register() {
     try {
       setLoading(true);
       setError("");
-      await warmUpAPI();
+      await warmUpAPI().catch(() => null);
       await API.post("/auth/register", { name, email, password });
       navigate("/");
     } catch (err) {
       setError(
         err?.response?.data?.msg ||
           err?.response?.data?.message ||
+          ([502, 503].includes(err?.response?.status)
+            ? "Backend is unavailable on Render. Please check the latest backend deploy logs."
+            : null) ||
           (err?.code === "ERR_NETWORK"
             ? "Backend is waking up. Please try again in a few seconds."
             : null) ||
