@@ -16,6 +16,8 @@ const parseOrigins = (value = "") =>
 
 const allowedOrigins = [
 	"https://finance-tracker-git-main-sanjay210407s-projects.vercel.app",
+	"https://finance-tracker-pe9x.vercel.app",
+	"https://finance-tracker-2d6w.vercel.app",
 	"http://localhost:3000",
 	...parseOrigins(process.env.FRONTEND_URL),
 	...parseOrigins(process.env.CORS_ORIGIN),
