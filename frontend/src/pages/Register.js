@@ -1,5 +1,5 @@
 import { useState } from "react";
-import API from "../services/api";
+import API, { warmUpAPI } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 import Footer from "../components/Footer";
@@ -21,10 +21,18 @@ function Register() {
     try {
       setLoading(true);
       setError("");
+      await warmUpAPI();
       await API.post("/auth/register", { name, email, password });
       navigate("/");
     } catch (err) {
-      setError(err?.response?.data?.message || "Registration failed. Please try again.");
+      setError(
+        err?.response?.data?.msg ||
+          err?.response?.data?.message ||
+          (err?.code === "ERR_NETWORK"
+            ? "Backend is waking up. Please try again in a few seconds."
+            : null) ||
+          "Registration failed. Please try again."
+      );
     } finally {
       setLoading(false);
     }

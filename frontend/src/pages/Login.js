@@ -1,5 +1,5 @@
 import { useState } from "react";
-import API from "../services/api";
+import API, { warmUpAPI } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 import Footer from "../components/Footer";
@@ -20,11 +20,19 @@ function Login() {
     try {
       setLoading(true);
       setError("");
+      await warmUpAPI();
       const res = await API.post("/auth/login", { email, password });
       localStorage.setItem("token", res.data.token);
       navigate("/dashboard");
     } catch (err) {
-      setError(err?.response?.data?.message || "Login failed. Please check your credentials.");
+      setError(
+        err?.response?.data?.msg ||
+          err?.response?.data?.message ||
+          (err?.code === "ERR_NETWORK"
+            ? "Backend is waking up. Please try again in a few seconds."
+            : null) ||
+          "Login failed. Please check your credentials."
+      );
     } finally {
       setLoading(false);
     }

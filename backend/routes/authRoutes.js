@@ -7,34 +7,60 @@ const router = express.Router();
 
 // Register
 router.post("/register", async (req, res) => {
-  const { name, email, password } = req.body;
+  try {
+    const { name, email, password } = req.body;
 
-  const hashed = await bcrypt.hash(password, 10);
+    if (!name || !email || !password) {
+      return res.status(400).json({ msg: "Please complete all fields" });
+    }
 
-  const user = await User.create({
-    name,
-    email,
-    password: hashed,
-  });
+    const existingUser = await User.findOne({ email });
 
-  res.json(user);
+    if (existingUser) {
+      return res.status(400).json({ msg: "User already exists" });
+    }
+
+    const hashed = await bcrypt.hash(password, 10);
+
+    const user = await User.create({
+      name,
+      email,
+      password: hashed,
+    });
+
+    res.status(201).json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    });
+  } catch (err) {
+    res.status(500).json({ msg: "Registration failed" });
+  }
 });
 
 // Login
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+    if (!email || !password) {
+      return res.status(400).json({ msg: "Please enter email and password" });
+    }
 
-  if (!user) return res.status(400).json({ msg: "User not found" });
+    const user = await User.findOne({ email });
 
-  const isMatch = await bcrypt.compare(password, user.password);
+    if (!user) return res.status(400).json({ msg: "User not found" });
 
-  if (!isMatch) return res.status(400).json({ msg: "Wrong password" });
+    const isMatch = await bcrypt.compare(password, user.password);
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    if (!isMatch) return res.status(400).json({ msg: "Wrong password" });
 
-  res.json({ token });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+
+    res.json({ token });
+  } catch (err) {
+    res.status(500).json({ msg: "Login failed" });
+  }
 });
 
 module.exports = router;
